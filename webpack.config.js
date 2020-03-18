@@ -5,6 +5,7 @@ const GenerateJsonPlugin = require('generate-json-webpack-plugin')
 const ExtensionReloader = require('webpack-extension-reloader')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const ZipPlugin = require('zip-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const pkg = require('./package.json')
 
@@ -26,6 +27,7 @@ module.exports = (_, { mode }) => {
     entry: {
       'content-script': path.join(__dirname, 'src', 'content-script.js'),
       background: path.join(__dirname, 'src', 'background.js'),
+      options: path.join(__dirname, 'src', 'options.js'),
     },
 
     output: {
@@ -82,6 +84,13 @@ module.exports = (_, { mode }) => {
       new GenerateJsonPlugin('manifest.json', manifest),
       new ExtensionReloader({
         manifest: path.resolve(__dirname, distFolderName, 'manifest.json'),
+      }),
+      new HtmlWebpackPlugin({
+        template: path.join(__dirname, 'src', 'template.html.ejs'),
+        title: 'Tako Options',
+        env: mode,
+        filename: 'options.html',
+        chunks: ['options'],
       }),
     ],
   }

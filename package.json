@@ -21,7 +21,8 @@
     "manifest_version": 2,
     "permissions": [
       "activeTab",
-      "storage"
+      "storage",
+      "tabs"
     ],
     "icons": {
       "16": "icon-16.png",
@@ -33,6 +34,7 @@
     "web_accessible_resources": [
       "tako.svg"
     ],
+    "options_page": "options.html",
     "content_scripts": [
       {
         "matches": [
@@ -47,7 +49,8 @@
     "background": {
       "scripts": [
         "background.js"
-      ]
+      ],
+      "persistent": false
     }
   },
   "eslintConfig": {

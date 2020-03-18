@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 
 import { MOUNT_SELECTOR } from '@/constants'
 import { useStore } from '@/storage'
@@ -72,13 +72,29 @@ const AskForToken = () => {
   )
 }
 
+const HideOriginalTable = () => {
+  React.useEffect(() => {
+    document.querySelector(MOUNT_SELECTOR).setAttribute('hidden', '')
+    return () => {
+      document.querySelector(MOUNT_SELECTOR).removeAttribute('hidden')
+    }
+  }, [])
+
+  return null
+}
+
 const Root = () => {
   const token = useStore(state => state.token)
 
   return (
     <PrependPortal targetSelector={MOUNT_SELECTOR}>
       {!token && <AskForToken />}
-      {token && <App />}
+      {token && (
+        <Fragment>
+          <HideOriginalTable />
+          <App />
+        </Fragment>
+      )}
     </PrependPortal>
   )
 }

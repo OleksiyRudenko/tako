@@ -12,20 +12,23 @@ const limiter = new Bottleneck({
   maxConcurrent: MAX_REQUESTS,
 })
 
-const githubFetch = limiter.wrap((fragment, { importance, ...options } = {}) =>
-  fetch(`https://api.github.com/${fragment}`, {
-    ...options,
-    importance,
-    headers: {
-      Authorization: `token ${getState().token}`,
-    },
-  }).then(response => {
-    if (response.status < 200 || response.status > 299) {
-      throw new Error('Something went boom')
-    }
+const githubFetch = limiter.wrap(
+  (fragment, { importance, ...options } = {}) => {
+    const { token } = getState()
+    return fetch(`https://api.github.com/${fragment}`, {
+      ...options,
+      importance,
+      headers: token && {
+        Authorization: `token ${token}`,
+      },
+    }).then(response => {
+      if (response.status < 200 || response.status > 299) {
+        throw new Error('Something went boom')
+      }
 
-    return response
-  })
+      return response
+    })
+  }
 )
 
 export const getNode = (

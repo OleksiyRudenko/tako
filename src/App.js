@@ -336,19 +336,10 @@ const RepoExplorer = () => {
   )
 }
 
-const App = () => {
-  React.useEffect(() => {
-    document.querySelector(MOUNT_SELECTOR).setAttribute('hidden', '')
-    return () => {
-      document.querySelector(MOUNT_SELECTOR).removeAttribute('hidden')
-    }
-  }, [])
-
-  return (
-    <ReactQueryConfigProvider config={QUERY_CONFIG}>
-      <RepoExplorer />
-    </ReactQueryConfigProvider>
-  )
-}
+const App = () => (
+  <ReactQueryConfigProvider config={QUERY_CONFIG}>
+    <RepoExplorer />
+  </ReactQueryConfigProvider>
+)
 
 export default App
